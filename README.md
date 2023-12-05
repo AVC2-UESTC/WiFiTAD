@@ -15,7 +15,9 @@ The following packages are required to run this project:
 - jiblib
 - pyyaml
 
-use this command to install pytorch 1.9.1 : `pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html`
+We recommend to install pytorch 1.9.1: 
+
+`pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html`
 
 ### Setup
 
