@@ -1,5 +1,5 @@
-# WiFi-Temporal-Activity-Localization
-A model aims to handle wifi temporal activity localization
+# WiFi-Temporal-Activity-Detection
+A model aims to handle wifi temporal activity Detection
 
 ## Abstract
 This model tackles wifi activity detection task with an end-to-end, anchor-free network.
