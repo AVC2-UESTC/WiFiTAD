@@ -8,7 +8,7 @@ This model tackles wifi activity detection task with an end-to-end, anchor-free 
 
 ### Environment
 The following packages are required to run this project:
--Python 3.8
+- Python 3.8
 - pytorch == 1.9.1
 - tqdm
 - pandas
