@@ -2,7 +2,7 @@
 A model aims to handle wifi temporal activity localization
 
 ## Abstract
-This model tackles wifi temporal activity detectioni task with an end-to-end, anchor-free network.
+This model tackles wifi activity detection task with an end-to-end, anchor-free network.
 
 ## Getting Started
 
