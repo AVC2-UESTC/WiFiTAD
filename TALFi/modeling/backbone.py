@@ -75,6 +75,6 @@ class Backbone(nn.Module):
         temporal_x, fft_x = self.decomp(x)
         temporal_feat = self.temporal_stream(temporal_x)
         fft_feat = self.frequency_stream(fft_x)
-        # joint_feat = self.JA(temporal_feat, fft_feat)
-        joint_feat = self.JA(fft_feat, temporal_feat)
+        joint_feat = self.JA(temporal_feat, fft_feat)
+        # joint_feat = self.JA(fft_feat, temporal_feat)
         return joint_feat
