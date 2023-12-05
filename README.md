@@ -12,9 +12,11 @@ The following packages are required to run this project:
 - jiblib
 - pyyaml
 
-### Setup
 use this command to install pytorch 1.9.1 : `pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html`
-use this command to build the project package manager: `python3 setup.py develop`
+
+### Setup
+
+use this command in terminal to build the project package manager: `python3 setup.py develop`
 
 ### Training and Tnference
 you can run the TALFi in terminal by: `bash TALFi/utils/TALFi.sh 0,1,2,3`
