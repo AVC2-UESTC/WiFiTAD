@@ -16,7 +16,7 @@ We recommend to install Python 3.8 and pytorch 1.9.1:
 
 Other packages required to support this project can be installed by running:
 
-'pip install -r requirements.txt'
+`pip install -r requirements.txt`
 
 ### Setup
 
