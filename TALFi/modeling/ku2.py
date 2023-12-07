@@ -6,6 +6,10 @@ from TALFi.modeling.atten import FullAttention, AttentionLayer
 from TALFi.modeling.encoder import Encoder, EncoderLayer, Encoder2, EncoderLayer2, EncoderLayer_Hou
 
 class ScaleExp(nn.Module):
+    '''
+    Different layers regression to different size range
+    Learn a trainable scalar to automatically adjust the base of exp(si * x)
+    '''
     def __init__(self, init_value=1.0):
         super(ScaleExp, self).__init__()
         self.scale = nn.Parameter(torch.FloatTensor([init_value]))
