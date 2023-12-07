@@ -56,6 +56,9 @@ class Unit1D(nn.Module):
         return x
 
 class Projection(nn.Module):
+    '''
+    Increase Channel
+    '''
     def __init__(self, in_channels):
         super(Projection, self).__init__()
         self.project = nn.Sequential(
