@@ -110,9 +110,6 @@ def load_video_data(video_infos, npy_data_path):
     data_dict = {}
     print('loading csi data ...')
     
-    
-    # 1D Conv changed original to 1, 8500, 30, 30, now is 1, 8500, 30, 1
-    # ===========================================================================
     for video_name in tqdm.tqdm(list(video_infos.keys()), ncols=0):
         data = np.load(os.path.join(npy_data_path, video_name + '.npy'))
         data = np.transpose(data)

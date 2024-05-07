@@ -85,8 +85,6 @@ class CrossAttention(nn.Module):
     def forward(self, queries, keys, values, attn_mask):
         B, L, H, E = queries.shape
         _, S, _, D = values.shape
-        # queries = queries
-        # print(queries)
         scale = self.scale or 1./sqrt(E)
 
         scores = torch.einsum("blhe,bshe->bhls", queries, keys)

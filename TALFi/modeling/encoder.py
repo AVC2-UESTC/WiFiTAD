@@ -95,24 +95,12 @@ class EncoderLayer2(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.activation = F.relu if activation == "relu" else F.gelu
         
-        # self.embedding_q = DatawithoutPOSEmbedding(d_model, d_model, 1, dropout)
-        # self.embedding_k = DatawithoutPOSEmbedding(d_model, d_model, 1, dropout)
-        # self.embedding_v = DatawithoutPOSEmbedding(d_model, d_model, 1, dropout)
 
     def forward(self, q, k, v, attn_mask=None):
-        # main_old_x = v
         q = q.permute(0, 2, 1)
         k = k.permute(0, 2, 1)
         v = v.permute(0, 2, 1)
 
-        # q = self.embedding_q(q)
-        # k = self.embedding_k(k)
-        # v = self.embedding_v(v)
-        # x [B, L, D]
-        # x = x + self.dropout(self.attention(
-        #     x, x, x,
-        #     attn_mask = attn_mask
-        # ))
         x, attn = self.attention(
             q, k, v,
             attn_mask = attn_mask
