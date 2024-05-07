@@ -23,7 +23,7 @@ if not os.path.exists(output_path):
     
 if __name__ == '__main__':
     
-    for epoch in range(1, max_epoch+1):
+    for epoch in range(10, max_epoch+1):
         print("epoch: ",epoch)
         checkpoint_path =  checkpoint + 'checkpoint-'+ str(epoch) +'.ckpt'
         video_infos = get_video_info(config['dataset']['testing']['csi_info_path'])
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         net = talfi(in_channels=config['model']['in_channels'])
         net.load_state_dict(torch.load(checkpoint_path))
         net.eval().cuda()
-
+        #os.remove(checkpoint_path)
         score_func = nn.Softmax(dim=-1)
 
         result_dict = {}

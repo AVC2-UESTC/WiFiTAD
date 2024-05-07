@@ -1,4 +1,4 @@
-ngpu: 4
+ngpu: 2
 
 dataset:
   num_classes: 8
@@ -21,12 +21,13 @@ model:
   in_channels: 60
 
 training:
-  batch_size: 4
+  batch_size: 2
   learning_rate: 4e-5
   weight_decay: 1e-3
   max_epoch: 40
   focal_loss: true
-  checkpoint_path: ./models/TALFi/
+  # checkpoint_path: ./models/TALFi/
+  checkpoint_path: /datadisk/liuzhendong
   random_seed: 2020
 
 testing:
@@ -34,7 +35,9 @@ testing:
   top_k: 250
   nms_thresh: 0.5
   nms_sigma: 0.95
-  checkpoint_path: ./models/TALFi/
+  # checkpoint_path: ./models/TALFi/
+  
+  checkpoint_path: /datadisk/liuzhendong/
   output_path: ./output/TALFi/
 
 evaling:

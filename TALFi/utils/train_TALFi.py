@@ -1,4 +1,4 @@
-# bash TALFi/train_tools/TALFi.sh 5,6,7,8
+# bash TALFi/train_tools/TALFi.sh 2,3
 import os
 import random
 import torch
@@ -40,7 +40,7 @@ def print_training_info():
     print('piou:', config['training']['piou'])
     print('resume: ', resume)
     print('gpu num: ', ngpu)
-    
+
 
 def set_seed(seed):
     torch.manual_seed(seed)

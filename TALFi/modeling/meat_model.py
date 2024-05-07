@@ -5,10 +5,10 @@ from TALFi.modeling.multi_temporal_pyramid import Pyramid_Detection
 conv_channels = 512
 
 class talfi(nn.Module):
-    def __init__(self, in_channels=60):
+    def __init__(self, in_channels=30):
         super(talfi, self).__init__()
-        self.pyramid_detection = Pyramid_Detection()
         self.backbone = Backbone(in_channels)
+        self.pyramid_detection = Pyramid_Detection()
         self.reset_params()
         
     @staticmethod

@@ -7,7 +7,7 @@ model_name = config['model']['name']
 tious = [0.3, 0.4, 0.5, 0.6, 0.7]
 max_mAP = 0
 max_epoch = 0
-for i in range(1, max+1):
+for i in range(10, max+1):
     print("\n", "epoch: ", i)
     prediction = predection_path + "checkpoint" + str(i) + ".json"
     anet_detection = ANETdetection(
