@@ -56,25 +56,6 @@ class Unit1D(nn.Module):
             x = self._activation_fn(x)
         return x
 
-class Projection(nn.Module):
-    def __init__(self, in_channels):
-        super(Projection, self).__init__()
-        self.project = nn.Sequential(
-            nn.Conv1d(in_channels, 128, kernel_size=3, stride=1, padding=1, bias=True),
-            nn.GroupNorm(32, 128),
-            nn.ReLU(inplace=True),
-            nn.Conv1d(128, 256, kernel_size=3, stride=1, padding=1, bias=True),
-            nn.GroupNorm(32, 256),
-            nn.ReLU(inplace=True),
-            nn.Conv1d(256, 512, kernel_size=3, stride=1, padding=1, bias=True),
-            nn.GroupNorm(32, 512),
-            nn.ReLU(inplace=True)
-        )
-
-    def forward(self, x):
-        x = self.project(x)
-        return x
-
 class ConvBlock(nn.Module):
     def __init__(self, channels, kernel_size=2, stride=2):
         super(ConvBlock, self).__init__()
@@ -86,6 +67,73 @@ class ConvBlock(nn.Module):
         out = x + self.dw(x) + self.maxdw(x)
         out = self.lu(out)
         return out
+
+class ffn(nn.Module):
+    def __init__(self, in_channels=512, out_channels=512, kernel_size=3, stride=2):
+        super(ffn, self).__init__()
+        self.relu = nn.ReLU(inplace=True)
+        self.groupnorm = nn.GroupNorm(32,512)
+        self.ffn1 = Unit1D(
+                                in_channels=in_channels,
+                                output_channels=2048,
+                                kernel_shape=kernel_size,
+                                stride=1,
+                                use_bias=True,
+                                activation_fn=None
+                            )
+        self.ffn2 = Unit1D(
+                                in_channels=2048,
+                                output_channels=out_channels,
+                                kernel_shape=kernel_size,
+                                stride=1,
+                                use_bias=True,
+                                activation_fn=None
+                            )
+
+
+    def forward(self, x):
+        x1 = self.groupnorm(x)
+        x1 = (self.ffn2(self.relu(self.ffn1(x1)))) + x
+        return x1
+
+
+class SeeB(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=3, stride=2):
+        super(SeeB, self).__init__()
+        self.relu = nn.ReLU(inplace=True)
+        self.conv_avg = nn.Sequential(
+                            Unit1D(
+                                in_channels=in_channels,
+                                output_channels=out_channels,
+                                kernel_shape=kernel_size,
+                                stride=1,
+                                use_bias=True,
+                                activation_fn=None
+                            ),
+                            nn.GroupNorm(out_channels//16, out_channels),
+                            nn.ReLU(inplace=True))
+        self.conv_max = nn.Sequential(
+                            Unit1D(
+                                in_channels=in_channels,
+                                output_channels=out_channels,
+                                kernel_shape=kernel_size,
+                                stride=1,
+                                use_bias=True,
+                                activation_fn=None
+                            ),
+                            nn.GroupNorm(out_channels//16, out_channels),
+                            nn.ReLU(inplace=True))
+        self.avgpool = nn.AvgPool1d(kernel_size=2,stride=2,padding=0)
+        self.maxpool = nn.MaxPool1d(kernel_size=2,stride=2,padding=0)
+        self.ffn_avg = ffn()
+        self.ffn_max = ffn()
+
+    def forward(self, avg, max):
+        avg_t = self.conv_max(avg) + avg
+        max_t = self.conv_avg(max) + max
+        avg_t = self.ffn_avg(self.avgpool(avg_t))
+        max_t = self.ffn_max(self.maxpool(max_t))
+        return avg_t, max_t
 
 
 class TFBlock(nn.Module):
@@ -149,13 +197,14 @@ class Transformer_encoder(nn.Module):
                     in_channels=512,
                     output_channels=512,
                     kernel_shape=3,
-                    stride=2,
+                    stride=1,
                     use_bias=True,
                     activation_fn=None
-                ),nn.GroupNorm(32, 512),nn.ReLU(inplace=True))
+                ),nn.GroupNorm(32, 512),nn.MaxPool1d(2,2))
     def forward(self, x_enc, origin):
 
         origin_add = self.add_gate(origin)
+        # x_enc = x_enc*origin_add
 
         x_enc = x_enc.permute(0, 2, 1)
         origin_add = origin_add.permute(0, 2, 1)
@@ -173,11 +222,11 @@ class joint_attention(nn.Module):
     def __init__(self, enc_in, d_model, n_heads, d_ff, e_layers, factor=3, dropout=0.1, output_attention=False, attn='full', activation='gelu', distil=False):
         super(joint_attention, self).__init__()
         if attn == "full":
-            en = EncoderLayer2
+            # en = EncoderLayer2
             an = FullAttention
             attlay = AttentionLayer
         else:
-            en = CrossEncoderLayer
+            # en = CrossEncoderLayer
             an = CrossAttention
             attlay = CrossAttentionLayer
 

@@ -1,4 +1,4 @@
-# bash TALFi/train_tools/TALFi.sh 2,3
+# bash TALFi/train_tools/TALFi.sh 3,4
 import os
 import random
 import torch
@@ -8,7 +8,7 @@ import tqdm
 import numpy as np
 from TALFi.dataset.smartwifi_dataset import SmartWiFi, get_video_info, \
     load_video_data, detection_collate, get_video_anno
-from TALFi.modeling.meat_model import talfi
+from TALFi.modeling.model3 import talfi
 from TALFi.modeling.multi_losses import MultiSegmentLoss
 from TALFi.config import config
 

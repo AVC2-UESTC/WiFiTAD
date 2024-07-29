@@ -5,7 +5,7 @@ import numpy as np
 import tqdm
 import json
 from TALFi.dataset.smartwifi_dataset import get_video_info, get_class_index_map
-from TALFi.modeling.meat_model import talfi
+from TALFi.modeling.model3 import talfi
 from TALFi.evaluation.softnms import softnms_v2
 from TALFi.config import config
 max_epoch = config['training']['max_epoch']
