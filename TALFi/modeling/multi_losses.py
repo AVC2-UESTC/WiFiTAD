@@ -77,7 +77,7 @@ class FocalLoss_Ori(nn.Module):
             loss = loss.sum()
         return loss
 
-def iou_loss(pred, target, weight=None, loss_type='distance-iou', reduction='none'):
+def iou_loss2(pred, target, weight=None, loss_type='distance-iou', reduction='none'):
     """
     Distance IoU Loss = 1 - IoU + alpha * (d / diagonal) ** 2, 
     where d is the Euclidean distance between box centers divided by diagonal.
@@ -120,6 +120,71 @@ def iou_loss(pred, target, weight=None, loss_type='distance-iou', reduction='non
     elif reduction == 'mean':
         loss = loss.mean()
     return loss
+
+def iou_loss(pred, target, weight=None, loss_type='diou', reduction='none'):
+    """
+    jaccard: A ∩ B / A ∪ B = A ∩ B / (area(A) + area(B) - A ∩ B)
+    """
+    pred_left = pred[:, 0]
+    pred_right = pred[:, 1]
+    target_left = target[:, 0]
+    target_right = target[:, 1]
+
+    pred_area = pred_left + pred_right
+    target_area = target_left + target_right
+
+    eps = torch.finfo(torch.float32).eps
+
+    inter = torch.min(pred_left, target_left) + torch.min(pred_right, target_right)
+    area_union = target_area + pred_area - inter
+    ious = inter / area_union.clamp(min=eps)
+
+    if loss_type == 'liou':
+        loss = 1.0 - ious
+    elif loss_type == 'giou':
+        ac_uion = torch.max(pred_left, target_left) + torch.max(pred_right, target_right)
+        gious = ious - (ac_uion - area_union) / ac_uion.clamp(min=eps)
+        loss = 1.0 - gious
+    elif loss_type == 'diou':
+        # smallest enclosing box
+        lc = torch.max(pred_left, target_left)
+        rc = torch.max(pred_right, target_right)
+        len_c = lc + rc
+        # offset between centers
+        rho = 0.5 * (pred_right - pred_left - target_right + target_left)
+        loss = 1.0 - ious + torch.square(rho / len_c.clamp(min=eps))
+    elif loss_type == 'abiou':
+        # print(1, pred)
+        # print(2, target)
+        inter_start = torch.max(pred_left, target_left)
+        inter_end = torch.min(pred_right, target_right)
+        inter = (inter_end - inter_start).clamp(min=eps)
+        area_union = torch.max(pred_right, target_right) - torch.min(pred_left, target_left)
+        ious = inter / area_union.clamp(min=eps)
+        loss = 1.0 - ious
+    else:
+        loss = ious
+
+    if weight is not None:
+        loss = loss * weight.view(loss.size())
+    if reduction == 'sum':
+        loss = loss.sum()
+    elif reduction == 'mean':
+        loss = loss.mean()
+    return loss
+
+def calc_ioa(pred, target):
+    pred_left = pred[:, 0]
+    pred_right = pred[:, 1]
+    target_left = target[:, 0]
+    target_right = target[:, 1]
+
+    pred_area = pred_left + pred_right
+    eps = torch.finfo(torch.float32).eps
+
+    inter = torch.min(pred_left, target_left) + torch.min(pred_right, target_right)
+    ioa = inter / pred_area.clamp(min=eps)
+    return ioa
 
 class MultiSegmentLoss(nn.Module):
     def __init__(self, num_classes, overlap_thresh, negpos_ratio, use_gpu=True,
@@ -179,7 +244,84 @@ class MultiSegmentLoss(nn.Module):
         loc_p = loc_data[pos_idx].view(-1, 2)
         loc_target = loc_t[pos_idx].view(-1, 2)
         if loc_p.numel() > 0:
-            loss_l = iou_loss(loc_p.clamp(min=0), loc_target, loss_type='liou', reduction='mean')
+            loss_l = iou_loss2(loc_p.clamp(min=0), loc_target, loss_type='liou', reduction='mean')
+        else:
+            loss_l = loc_p.sum()
+        # softmax focal loss
+        conf_p = conf_data.view(-1, num_classes)
+        targets_conf = conf_t.view(-1, 1)
+        conf_p = F.softmax(conf_p, dim=1)
+        loss_c = self.focal_loss(conf_p, targets_conf)
+
+        N = max(pos.sum(), 1)
+        loss_l /= N
+        loss_c /= N
+        return loss_l, loss_c
+    
+# ab损失，注意里边有东西
+class MultiSegmentLoss15(nn.Module):
+    def __init__(self, num_classes, overlap_thresh, negpos_ratio, use_gpu=True,
+                 use_focal_loss=False):
+        super(MultiSegmentLoss15, self).__init__()
+        self.num_classes = num_classes
+        self.overlap_thresh = overlap_thresh
+        self.negpos_ratio = negpos_ratio
+        self.use_gpu = use_gpu
+        self.use_focal_loss = use_focal_loss
+        if self.use_focal_loss:
+            self.focal_loss = FocalLoss_Ori(num_classes, balance_index=0, size_average=False,
+                                            alpha=0.1)
+        self.center_loss = nn.BCEWithLogitsLoss(reduction='sum')
+
+    def forward(self, predictions, targets, pre_locs=None):
+        """
+        :param predictions: a tuple containing loc, conf and priors
+        :param targets: ground truth segments and labels
+        :return: loc loss and conf loss
+        """
+        loc_data, conf_data, priors = predictions
+        num_batch = loc_data.size(0)
+        num_priors = priors.size(0)
+        num_classes = self.num_classes
+        clip_length = config['dataset']['training']['clip_length']
+        # match priors and ground truth segments
+        loc_t = torch.Tensor(num_batch, num_priors, 2).to(loc_data.device)
+        conf_t = torch.LongTensor(num_batch, num_priors).to(loc_data.device)
+
+        loc_data_gt = loc_data + priors*clip_length
+        with torch.no_grad():
+            for idx in range(num_batch):
+                truths = targets[idx][:, :-1]
+                labels = targets[idx][:, -1]
+                """
+                match gt
+                """
+                K = priors.size(0)
+                N = truths.size(0)
+                center = (priors[:, 0].unsqueeze(1).expand(K, N) + priors[:, 1].unsqueeze(1).expand(K, N))/2.0
+                left = (center - truths[:, 0].unsqueeze(0).expand(K, N)) * clip_length
+                right = (truths[:, 1].unsqueeze(0).expand(K, N) - center) * clip_length
+                area = left + right 
+                maxn = clip_length * 2
+                area[left < 0] = maxn
+                area[right < 0] = maxn
+                best_truth_area, best_truth_idx = area.min(1)
+
+                # center_ = (priors[:, 0]+priors[:, 1])/2
+                # l_c = center_ - priors[:, 0]
+                # r_c = priors[:, 1] - center_
+                loc_t[idx][:, 0] = (truths[best_truth_idx, 0]) * clip_length
+                loc_t[idx][:, 1] = (truths[best_truth_idx, 1]) * clip_length
+                conf = labels[best_truth_idx]
+                conf[best_truth_area >= maxn] = 0
+                conf_t[idx] = conf
+
+        pos = conf_t > 0  # [num_batch, num_priors]
+        pos_idx = pos.unsqueeze(pos.dim()).expand_as(loc_data)  # [num_batch, num_priors, 2]
+        loc_p = loc_data_gt[pos_idx].view(-1, 2)
+        loc_target = loc_t[pos_idx].view(-1, 2)
+        if loc_p.numel() > 0:
+            loss_l = iou_loss(loc_p.clamp(min=0), loc_target, loss_type='abiou', reduction='mean')
         else:
             loss_l = loc_p.sum()
         # softmax focal loss
@@ -249,7 +391,7 @@ class FocalLoss_Ori_class(nn.Module):
         return loss
 
 
-# 用于滑窗的损失
+# 我正在写的用于resnet滑窗的损失
 class Classification_loss(nn.Module):
     def __init__(self, num_classes, use_gpu=True, use_focal_loss=True):
         super(Classification_loss, self).__init__()
@@ -263,3 +405,14 @@ class Classification_loss(nn.Module):
     def forward(self, predictions, gt):
         loss_c = self.focal_loss(predictions, gt)
         return loss_c
+
+# class Classification_loss(nn.Module):
+#     def __init__(self, num_classes, use_focal_loss=True):
+#         super(Classification_loss, self).__init__()
+#         self.num_classes = num_classes
+#         self.cross_entropy_loss = nn.CrossEntropyLoss()
+
+#     def forward(self, predictions, gt):
+#         gt = torch.tensor(gt, dtype=torch.long).to(predictions.device)
+#         loss_c = self.cross_entropy_loss(predictions, gt)
+#         return loss_c

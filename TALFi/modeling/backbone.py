@@ -1,47 +1,76 @@
 import torch
 import torch.nn as nn
-from TALFi.modeling.ku2 import Projection, TFBlock
+from TALFi.modeling.ku2 import TFBlock, SeeB
 import matplotlib.pyplot as plt
 
-class Downsample_Net(nn.Module):
+class Embedding(nn.Module):
     def __init__(self, in_channels):
-        super(Downsample_Net, self).__init__()
-        self.project_layer1 = Projection(in_channels)
-        # self.project_layer2 = Projection(in_channels)
-        # self.project_layer3 = Projection(in_channels)
-        self.adaptive_pool = nn.ModuleList([
-                          TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
-                          TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
-                          TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
-                          TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
-                          ])
+        super(Embedding, self).__init__()
+        self.embedding = nn.Sequential(
+            nn.Conv1d(in_channels, 128, kernel_size=3, stride=1, padding=1, bias=True),
+            nn.GroupNorm(32, 128),
+            nn.ReLU(inplace=True),
+            nn.Conv1d(128, 256, kernel_size=3, stride=1, padding=1, bias=True),
+            nn.GroupNorm(32, 256),
+            nn.ReLU(inplace=True),
+            nn.Conv1d(256, 512, kernel_size=3, stride=1, padding=1, bias=True),
+            nn.GroupNorm(32, 512),
+            nn.ReLU(inplace=True)
+        )
         
     def forward(self, time):
-        time = self.project_layer1(time)
-        # fre = self.project_layer2(fre)
-        # ang = self.project_layer3(ang)
-        for block in self.adaptive_pool:
-            time = block(time)
+        time = self.embedding(time)
         return time
 
-class Backbone(nn.Module):
-    def __init__(self, in_channels):
-        super(Backbone, self).__init__()
-        self.TFB_Stream = Downsample_Net(in_channels=30)
-
+# class Backbone(nn.Module):
+#     def __init__(self):
+#         super(Backbone, self).__init__()
+#         self.adaptive_pool = nn.ModuleList([
+#                           TFBlock(in_channels=512, out_channels=512,kernel_size=3, stride=2),
+#                           TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+#                           TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+#                           TFBlock(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+#                           ])
+        
+#     def forward(self, time):
+#         for block in self.adaptive_pool:
+#             time = block(time)
+#         return time
+import torch.nn.functional as F
+class SEBlock(nn.Module):
+    def __init__(self, channels, reduction=16):
+        super(SEBlock, self).__init__()
+        self.fc1 = nn.Conv1d(channels, channels // reduction, kernel_size=1)
+        self.fc2 = nn.Conv1d(channels // reduction, channels, kernel_size=1)
+    
     def forward(self, x):
-        # plot_and_save_csi(x, 'wifi_csi.png')
-        # frequency_domain = torch.fft.fft(x, dim=2)
-        # amplitude = torch.abs(frequency_domain)
-        # angle = torch.angle(frequency_domain)
-        # 将频率大于200的部分置零
-        # frequency_domain[..., 1000:] = 0
-        # amplitude[..., :1] = 0
+        batch, channels, length = x.size()
+        y = F.adaptive_avg_pool1d(x, 1).view(batch, channels, 1)
+        y = F.relu(self.fc1(y))
+        y = torch.sigmoid(self.fc2(y))
+        return  y
+    
+class Backbone(nn.Module):
+    def __init__(self):
+        super(Backbone, self).__init__()
+        self.adaptive_pool = nn.ModuleList([
+                          SeeB(in_channels=512, out_channels=512,kernel_size=3, stride=2),
+                          SeeB(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+                          SeeB(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+                          SeeB(in_channels=512, out_channels=512, kernel_size=3, stride=2),
+                          ])
+        self.se = SEBlock(channels=512)
+        
+    def forward(self, time):
+        avg = time
+        max = time
+        channel = time
 
-        feat = self.TFB_Stream(x)
-
-        return feat
-
+        channel = self.se(channel)
+        for block in self.adaptive_pool:
+            avg, max = block(avg, max)
+        output = (avg + max) * channel
+        return output
 
 
 def plot_and_save_csi(data, save_path):

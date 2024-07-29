@@ -23,7 +23,7 @@ Other packages required to support this project can be installed by running:
 build the project package manager: `python3 setup.py develop`
 
 ### Training and Tnference
-you can run the TALFi in terminal by: `bash TALFi/train_tools/TALFi.sh 0,1`
+you can run the TALFi in terminal by: `bash TALFi/train_tools/TALFi.sh 0,1,2,3`
 
 as well run the Slide Window Style Classify model by: `bash TALFi/utils/SlideWindow.sh 0`
 

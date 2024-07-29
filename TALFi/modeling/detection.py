@@ -28,6 +28,7 @@ class Tower(nn.Module):
     def forward(self, x):
         return self.conf_tower(x)
 
+
 class conf_head_af(nn.Module):
     def __init__(self, out_channels=512, num_classes=8):
         super().__init__()
@@ -48,14 +49,24 @@ class conf_head_af(nn.Module):
 class loc_head_af2(nn.Module):
     def __init__(self, out_channels=512):
         super().__init__()
-        self.loc = Unit1D(
+        self.loc =nn.Sequential(Unit1D(
+                in_channels=out_channels,
+                output_channels=out_channels,
+                kernel_shape=3,
+                stride=1,
+                use_bias=True,
+                activation_fn=None
+            ),
+            nn.GroupNorm(32, out_channels),
+            nn.ReLU(inplace=True),
+        Unit1D(
                 in_channels=out_channels,
                 output_channels=2,
                 kernel_shape=3,
                 stride=1,
                 use_bias=True,
                 activation_fn=None
-            )
+            ))
 
     def forward(self, x):
         x = self.loc(x)
@@ -117,7 +128,7 @@ class detection_head(nn.Module):
         self.loc_tower = Tower(512, 3)
         self.conf_tower = Tower(512, 3)
         
-        self.loc_head = loc_head_af3()
+        self.loc_head = loc_head_af2()
         self.conf_head = conf_head_af()
         
     def forward(self, x):

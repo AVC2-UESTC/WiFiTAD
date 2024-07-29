@@ -24,7 +24,7 @@ training:
   batch_size: 2
   learning_rate: 4e-5
   weight_decay: 1e-3
-  max_epoch: 40
+  max_epoch: 37
   focal_loss: true
   # checkpoint_path: ./models/TALFi/
   checkpoint_path: /datadisk/liuzhendong
