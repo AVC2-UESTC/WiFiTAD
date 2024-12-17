@@ -1,0 +1,6 @@
+README.md
+setup.py
+TALFi.egg-info/PKG-INFO
+TALFi.egg-info/SOURCES.txt
+TALFi.egg-info/dependency_links.txt
+TALFi.egg-info/top_level.txt
