@@ -2,7 +2,7 @@
 A model aims to handle wifi temporal activity Detection
 
 ## Abstract
-This model tackles wifi activity detection task with an end-to-end, anchor-free network.
+The code of WiFi based Temporal Activity Detection via Dual Pyramid.
 
 ## Getting Started
 
@@ -10,9 +10,9 @@ This model tackles wifi activity detection task with an end-to-end, anchor-free 
 
 
 
-We recommend to install Python 3.8 and pytorch 1.9.1: 
+We recommend to install Python 3.8 and pytorch 1.12.1: 
 
-`pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html`
+`pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116`
 
 Other packages required to support this project can be installed by running:
 
@@ -23,9 +23,7 @@ Other packages required to support this project can be installed by running:
 build the project package manager: `python3 setup.py develop`
 
 ### Training and Tnference
-you can run the TALFi in terminal by: `bash TALFi/train_tools/TALFi.sh 0,1,2,3`
-
-as well run the Slide Window Style Classify model by: `bash TALFi/utils/SlideWindow.sh 0`
+you can run the TALFi in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1,2,3`
 
 ### Data Preparation
 our dataset is available in :``
