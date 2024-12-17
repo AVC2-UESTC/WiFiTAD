@@ -1,5 +1,4 @@
 # WiFi-Temporal-Activity-Detection
-A model aims to handle wifi temporal activity Detection
 
 ## Abstract
 The code of WiFi based Temporal Activity Detection via Dual Pyramid.
