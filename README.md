@@ -25,6 +25,6 @@ build the project package manager: `python3 setup.py develop`
 you can run the TALFi in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
 
 ### Data Preparation
-our dataset is available in :`https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link`
+our dataset is available in :[Google cloud]{https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link}
 
 ## Citation
