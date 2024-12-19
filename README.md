@@ -38,4 +38,4 @@ Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools
 
 ## Acknowledge
 
-This code is built on AFSD, Actionformer, Tridet and Actionformer. We express our gratitude for their outstanding contributions!
+This code is built on AFSD, Actionformer, Tridet and Actionformer. We express our gratitude for their contributions!
