@@ -6,15 +6,18 @@
 
 [[paper](https://github.com/AVC2-UESTC/WiFiTAD/blob/main/mainPaper.pdf)] [[appendix](https://github.com/AVC2-UESTC/WiFiTAD/blob/main/Appendix.pdf)] 
 
-
 **Abstract:** *We address the challenge of WiFi-based temporal activity detection and  propose an efficient Dual Pyramid Network that integrates Temporal Signal Semantic Encoders and Local Sensitive Response Encoders. The Temporal Signal Semantic Encoder splits feature learning into high and low-frequency components, using a novel Signed Mask-Attention mechanism to emphasize important areas and downplay unimportant ones, with the features fused using ContraNorm. The Local Sensitive Response Encoder captures fluctuations without learning. These feature pyramids are then combined using a new cross-attention fusion mechanism. We also introduce a dataset with over 2,114 activity segments across 553 WiFi CSI samples, each lasting around 85 seconds. Extensive experiments show our method outperforms challenging baselines.*
 
- <p align="center">
- <img width="700" src="figures/framework.jpg">
- </p>
+ ![](figures/framework.png)
 
-## Note
-This is a preliminary version for early access and I will clean it for better readability.
+## Summary
+- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
+- Powerful dual-pyramid encoders and multi-level cross-attention feature fusion.
+- Easily extansible to other signal modalities.
+
+## Performance
+
+![](figures/performance.png)
 
 ### Dependencies & Installation
 We recommend to install Python 3.8 and pytorch 1.12.1: 
@@ -35,17 +38,10 @@ WiFi Temporal Activity Detection Dataset: [link]
 Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
 
 ## Acknowledge
-This code is built on AFSD, Actionformer, Tridet and Actionformer. We express our gratitude for their contributions!
+This code is built on AFSD and Actionformer. We express our gratitude for their contributions!
 
 ## Citation
 If you find this project uesful to your research, please use the following BibTex entry.
 ```
-@InProceedings{Lin_2021_CVPR,
-    author    = {Lin, Chuming and Xu, Chengming and Luo, Donghao and Wang, Yabiao and Tai, Ying and Wang, Chengjie and Li, Jilin and Huang, Feiyue and Fu, Yanwei},
-    title     = {Learning Salient Boundary Feature for Anchor-free Temporal Action Localization},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month     = {June},
-    year      = {2021},
-    pages     = {3320-3329}
-}
+@InProceedings
 ```
