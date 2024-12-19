@@ -11,16 +11,16 @@
  <img width="700" src="figures/framework.jpg">
  </p>
 
-** Summary **
-*- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
+## Summary 
+- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
 - Powerful dual-pyramid encoders and multi-level cross-attention feature fusion.
-- Easily extansible to other signal modalities.*
+- Easily extansible to other signal modalities.
 
 ## Performance
 
 ![](figures/performance.png)
 
-### Dependencies & Installation
+## Dependencies & Installation
 We recommend to install Python 3.8 and pytorch 1.12.1: 
 
 `pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116`
@@ -31,11 +31,11 @@ Other packages required to support this project can be installed by running:
 
 build the project package manager: `python3 setup.py develop`
 
-### Data Preparation
+## Data Preparation
 WiFi Temporal Activity Detection Dataset: [link]
 <!-- (https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link) -->
 
-### Training and Tnference
+## Training and Tnference
 Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
 
 ## Acknowledge
