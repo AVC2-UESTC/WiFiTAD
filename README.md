@@ -34,8 +34,18 @@ WiFi Temporal Activity Detection Dataset: [link]
 ### Training and Tnference
 Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
 
-## Citation
-
 ## Acknowledge
-
 This code is built on AFSD, Actionformer, Tridet and Actionformer. We express our gratitude for their contributions!
+
+## Citation
+If you find this project uesful to your research, please use the following BibTex entry.
+```
+@InProceedings{Lin_2021_CVPR,
+    author    = {Lin, Chuming and Xu, Chengming and Luo, Donghao and Wang, Yabiao and Tai, Ying and Wang, Chengjie and Li, Jilin and Huang, Feiyue and Fu, Yanwei},
+    title     = {Learning Salient Boundary Feature for Anchor-free Temporal Action Localization},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2021},
+    pages     = {3320-3329}
+}
+```
