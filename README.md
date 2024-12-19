@@ -1,6 +1,7 @@
 # WiFi Temporal Activity Detection via Dual Pyramid Network
 
-Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Chengzheng Hua and Ce Zhu, "WiFi Temporal Activity Detection via Dual Pyramid Network", AAAI 2025
+"WiFi Temporal Activity Detection via Dual Pyramid Network", AAAI 2025
+*Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Chengzheng Hua and Ce Zhu*
 
 [[paper](https://openaccess.thecvf.com/content/ICCV2023/papers/Li_Feature_Modulation_Transformer_Cross-Refinement_of_Global_Representation_via_High-Frequency_Prior_ICCV_2023_paper.pdf)] [[pretrained models](https://drive.google.com/file/d/13wAmc93BPeBUBQ24zUZOuUpdBFG2aAY5/view?usp=sharing)]
 
