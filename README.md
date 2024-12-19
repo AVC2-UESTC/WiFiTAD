@@ -11,10 +11,10 @@
  <img width="700" src="figures/framework.jpg">
  </p>
 
-## Summary
-- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
+** Summary **
+*- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
 - Powerful dual-pyramid encoders and multi-level cross-attention feature fusion.
-- Easily extansible to other signal modalities.
+- Easily extansible to other signal modalities.*
 
 ## Performance
 
