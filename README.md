@@ -1,6 +1,6 @@
 # WiFi Temporal Activity Detection via Dual Pyramid Network
 
-*WiFi Temporal Activity Detection via Dual Pyramid Network* -- AAAI 2025
+*WiFi Temporal Activity Detection via Dual Pyramid Network*, AAAI 2025
 
 *Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Chengzheng Hua and Ce Zhu*
 
