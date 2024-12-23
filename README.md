@@ -46,7 +46,7 @@ WiFi Temporal Activity Detection Dataset: [link]
 Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
 
 ## Citation & Acknowledgment
-If you find this project uesful to your research, please use the following BibTex entry.
+If you find the paper and its code uesful to your research, please use the following BibTex entry.
 <!-- -->
 
 This code is built on AFSD and Actionformer. We greatly express our gratitude for their contributions.
