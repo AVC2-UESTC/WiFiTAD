@@ -26,8 +26,7 @@ training:
   weight_decay: 1e-3
   max_epoch: 40
   focal_loss: true
-  # checkpoint_path: ./cache/
-  checkpoint_path: /datadisk/liuzhendong
+  checkpoint_path: ./cache/
   random_seed: 2020
 
 testing:
@@ -35,9 +34,8 @@ testing:
   top_k: 250
   nms_thresh: 0.5
   nms_sigma: 0.95
-  # checkpoint_path: ./cache/
-  checkpoint_path: /datadisk/liuzhendong/
+  checkpoint_path: ./cache/
   output_path: ./output/
 
 evaling:
-  gt_json: ./datasets/annotations/gt.json
+  gt_json: ./dataset/annotations/gt.json
