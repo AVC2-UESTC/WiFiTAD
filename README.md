@@ -43,7 +43,11 @@ WiFi Temporal Activity Detection Dataset: [link]
 <!-- (https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link) -->
 
 ### Training and Tnference
-Run the traing and inference processes in terminal by: `bash WiFiTAD/train_tools/tools.sh 0,1`
+Run the traing and inference processes in terminal by: 
+
+```
+bash WiFiTAD/train_tools/tools.sh 0,1
+```
 
 ## Citation & Acknowledgment
 If you find the paper and its code uesful to your research, please use the following BibTex entry.
