@@ -38,19 +38,19 @@ build the project package manager:
 python3 setup.py develop
 ```
 
-### Data Preparation
+### Dataset Downloads
 WiFi Temporal Activity Detection Dataset: [link]
 <!-- (https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link) -->
 
-### Training and Tnference
+### Training and Tnference Example
 Run the traing and inference processes in terminal by: 
 
 ```
 bash WiFiTAD/train_tools/tools.sh 0,1
 ```
 
-### Visualization
-![](figures/visualization.png)
+### Notes
+You may tune the hyperparameters of NMS to get wider range of TAD results.
 
 ## Citation & Acknowledgment
 If you find the paper and its code uesful to your research, please use the following BibTex entry.
