@@ -1,4 +1,4 @@
-# WiFi Temporal Activity Detection via Dual Pyramid Network
+# [AAAI25] WiFi Temporal Activity Detection via Dual Pyramid Network
 Authors: *Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Zhenghua Chen and Ce Zhu*
 
 ## Abstract
