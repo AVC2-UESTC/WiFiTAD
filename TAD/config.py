@@ -4,7 +4,7 @@ import yaml
 
 def get_config():
     parser = argparse.ArgumentParser()
-    parser.add_argument('config_file', type=str, default='configs/TALFi.yaml', nargs='?')
+    parser.add_argument('config_file', type=str, default='configs/WiFiTAD.yaml', nargs='?')
 
     parser.add_argument('--batch_size', type=int)
     parser.add_argument('--learning_rate', type=float)
