@@ -49,6 +49,9 @@ Run the traing and inference processes in terminal by:
 bash WiFiTAD/train_tools/tools.sh 0,1
 ```
 
+### Visualization
+![](figures/visualization.png)
+
 ## Citation & Acknowledgment
 If you find the paper and its code uesful to your research, please use the following BibTex entry.
 <!-- -->
