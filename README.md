@@ -28,11 +28,15 @@ pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --e
 
 Other packages required to support this project can be installed by running:
 
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 build the project package manager: 
 
-```python3 setup.py develop```
+```
+python3 setup.py develop
+```
 
 ### Data Preparation
 WiFi Temporal Activity Detection Dataset: [link]
