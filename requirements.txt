@@ -2,3 +2,4 @@ tqdm
 pandas
 joblib
 pyyaml
+matplotlib
