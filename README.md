@@ -55,7 +55,7 @@ You may tune the hyperparameters of NMS to get wider range of TAD results.
 ## Citation & Acknowledgment
 If you find the paper and its code uesful to your research, please use the following BibTex entry.
 
-'''
+```
 @misc{liu2024wificsibasedtemporal,
       title={WiFi CSI Based Temporal Activity Detection Via Dual Pyramid Network}, 
       author={Zhendong Liu and Le Zhang and Bing Li and Yingjie Zhou and Zhenghua Chen and Ce Zhu},
@@ -65,6 +65,6 @@ If you find the paper and its code uesful to your research, please use the follo
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2412.16233}, 
 }
-'''
+```
 
 This code is built on AFSD and Actionformer. We greatly express our gratitude for their contributions.
