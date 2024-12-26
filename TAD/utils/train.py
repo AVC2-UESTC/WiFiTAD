@@ -1,4 +1,4 @@
-# bash TAD/train_tools/tools.sh 6,7
+# bash TAD/train_tools/tools.sh 3,1
 import os
 import random
 import torch
@@ -6,10 +6,10 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import tqdm
 import numpy as np
-from TAD.dataset.smartwifi_dataset import SmartWiFi, get_video_info, \
+from TAD.dataset.load_csi import SmartWiFi, get_video_info, \
     load_video_data, detection_collate, get_video_anno
-from TAD.model.network import talfi
-from TAD.model.loss import MultiSegmentLoss
+from TAD.model.tad_model import wifitad
+from TAD.losses.loss import MultiSegmentLoss
 from TAD.config import config
 
 batch_size = config['training']['batch_size']
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     """
     Setup model
     """
-    net = talfi(in_channels=config['model']['in_channels'])
+    net = wifitad(in_channels=config['model']['in_channels'])
     net = nn.DataParallel(net, device_ids=list(range(ngpu))).cuda()
 
     """
