@@ -59,7 +59,7 @@ If you find the paper and its code uesful to your research, please use the follo
  @inproceedings{liu2024wificsibasedtemporal,
   title={WiFi CSI Based Temporal Activity Detection Via Dual Pyramid Network},
   author={Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Zhenghua Chen and Ce Zhu},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  booktitle={The 39th Annual AAAI Conference on Artificial Intelligence},
   volume={},
   number={},
   year={2025}
