@@ -9,7 +9,7 @@ We address the challenge of WiFi-based temporal activity detection and  propose 
  </p>
 
 ## Summary 
-- First TAD framework for wireless human action understanding, with an untrimmed WiFi CSI dataset.
+- First TAD framework for wireless human activity detection (localization), with an untrimmed WiFi CSI dataset.
 - Powerful dual-pyramid encoders and multi-level cross-attention feature fusion.
 - Easily extansible to other signal modalities.
 
