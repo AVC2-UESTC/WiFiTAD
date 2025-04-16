@@ -56,14 +56,7 @@ You may tune the hyperparameters of NMS to get wider range of TAD results.
 If you find the paper and its code uesful to your research, please use the following BibTex entry.
 
 ```
- @inproceedings{liu2024wificsibasedtemporal,
-  title={WiFi CSI Based Temporal Activity Detection Via Dual Pyramid Network},
-  author={Zhendong Liu, Le Zhang, Bing Li, Yingjie Zhou, Zhenghua Chen and Ce Zhu},
-  booktitle={The 39th Annual AAAI Conference on Artificial Intelligence},
-  volume={},
-  number={},
-  year={2025}
-}
+@article{Liu_Zhang_Li_Zhou_Chen_Zhu_2025, title={WiFi CSI Based Temporal Activity Detection via Dual Pyramid Network}, volume={39}, url={https://ojs.aaai.org/index.php/AAAI/article/view/32035}, DOI={10.1609/aaai.v39i1.32035}, number={1}, journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Liu, Zhendong and Zhang, Le and Li, Bing and Zhou, Yingjie and Chen, Zhenghua and Zhu, Ce}, year={2025}, month={Apr.}, pages={550-558} }
 ```
 
 This code is built on AFSD and Actionformer. We greatly express our gratitude for their contributions.
