@@ -40,7 +40,7 @@ python3 setup.py develop
 ```
 
 ### Dataset Downloads
-WiFi Temporal Activity Detection Dataset: We will release it soon!
+WiFi Temporal Activity Detection Dataset: [link](https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view?usp=drive_link)
 
 ### Training and Tnference Example
 Run the traing and inference processes in terminal by: 
