@@ -8,6 +8,8 @@ from TAD.dataset.load_csi import get_video_info, get_class_index_map
 from TAD.model.tad_model import wifitad
 from TAD.evaluation.softnms import softnms_v2
 from TAD.config import config
+from TAD.utils.device import get_device
+
 max_epoch = config['training']['max_epoch']
 num_classes = config['dataset']['num_classes']
 conf_thresh = config['testing']['conf_thresh']
@@ -18,6 +20,8 @@ clip_length = config['dataset']['testing']['clip_length']
 stride = config['dataset']['testing']['clip_stride']
 checkpoint = config['testing']['checkpoint_path']
 output_path = config['testing']['output_path']
+device = get_device()
+
 if not os.path.exists(output_path):
     os.makedirs(output_path)
     
@@ -32,9 +36,9 @@ if __name__ == '__main__':
         npy_data_path = config['dataset']['testing']['csi_data_path']
 
         net = wifitad(in_channels=config['model']['in_channels'])
-        net.load_state_dict(torch.load(checkpoint_path))
-        net.eval().cuda()
-        #os.remove(checkpoint_path)
+        net.load_state_dict(torch.load(checkpoint_path, map_location=device))
+        net.to(device)
+        net.eval()
         score_func = nn.Softmax(dim=-1)
 
         result_dict = {}
@@ -65,7 +69,7 @@ if __name__ == '__main__':
                     tmp = torch.zeros([clip.size(0), clip_length - clip.size(1),
                                     96, 96]).float()
                     clip = torch.cat([clip, tmp], dim=1)
-                clip = clip.unsqueeze(0).cuda()
+                clip = clip.unsqueeze(0).to(device)
                 with torch.no_grad():
                     output_dict = net(clip)
                 loc, conf, priors = output_dict['loc'][0], output_dict['conf'][0], output_dict['priors'][0]

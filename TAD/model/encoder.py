@@ -140,6 +140,7 @@ class Encoder2(nn.Module):
     def forward(self, q, k, v, attn_mask=None):
         # x [B, L, D]
         attns = []
+        x = None
         if self.conv_layers is not None:
             for attn_layer, conv_layer in zip(self.attn_layers, self.conv_layers):
                 x, attn = attn_layer(q, k, v, attn_mask=attn_mask)
@@ -166,6 +167,7 @@ class Encoder3(nn.Module):
     def forward(self, feat1, feat2, attn_mask=None):
         # x [B, L, D]
         attns = []
+        x = None
         for attn_layer in self.attn_layers:
             x, attn = attn_layer(feat1, feat2, attn_mask=attn_mask)
             attns.append(attn)

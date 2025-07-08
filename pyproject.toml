@@ -1,0 +1,54 @@
+# pyproject.toml
+
+[build-system]
+requires = [
+  "setuptools>=65.0",
+  "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TAD"
+version = "1.0.0"
+description = "WiFi CSI-Based Temporal Activity Detection via Dual Pyramid Network"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Zhendong Liu" },
+  { name = "Le Zhang" },
+  { name = "Bing Li" },
+  { name = "Yingjie Zhou" },
+  { name = "Zhenghua Chen" },
+  { name = "Ce Zhu" }
+]
+keywords = [
+  "WiFi", "CSI", "Temporal Activity Detection",
+  "Deep Learning", "PyTorch", "Computer Vision"
+]
+
+dependencies = [
+  "tqdm",
+  "pandas",
+  "joblib",
+  "pyyaml",
+  "matplotlib",
+  "torch",
+  "torchvision",
+  "torchaudio",
+]
+
+[project.urls]
+"Homepage"     = "https://github.com/AVC2-UESTC/WiFiTAD"
+"Paper"        = "https://ojs.aaai.org/index.php/AAAI/article/view/32035"
+"Code"         = "https://github.com/AVC2-UESTC/WiFiTAD"
+"Dataset"      = "https://drive.google.com/file/d/1gy0ppFtypVTtgBfrFzdMJUbXTb1MbPSK/view"
+"Bug Tracker"  = "https://github.com/AVC2-UESTC/WiFiTAD/issues"
+
+[project.scripts]
+tad-train = "TAD.train_tools.tools:main"
+tad-infer = "TAD.train_tools.tools:infer"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["cache", "output", "dataset"]
